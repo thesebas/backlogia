@@ -1,27 +1,18 @@
 FROM python:3.11-slim
 
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
 WORKDIR /app
 
-# Install system dependencies for legendary-gl (Epic Games) and Nile
+# Install system dependencies (git used by legendary-gl at runtime)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better layer caching
-COPY requirements.txt .
-
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Install Nile (Amazon Games client) from GitHub
-# Clone and patch pyproject.toml to fix packaging issues
-RUN pip install --no-cache-dir pycryptodome zstandard requests protobuf json5 \
-    && git clone --depth 1 https://github.com/imLinguin/nile.git /opt/nile \
-    && cd /opt/nile \
-    && sed -i 's/dynamic = \["version"\]/version = "1.1.1"/' pyproject.toml \
-    && echo '[tool.setuptools.packages.find]' >> pyproject.toml \
-    && echo 'include = ["nile*"]' >> pyproject.toml \
-    && pip install --no-cache-dir .
+# Install Python dependencies with uv (layer cached until lockfile changes)
+ENV UV_PROJECT_ENVIRONMENT=/app/.venv
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-dev
 
 # Copy application code
 COPY web/ ./web/
@@ -32,6 +23,7 @@ RUN mkdir -p /data
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 ENV DATABASE_PATH=/data/game_library.db
+ENV PATH="/app/.venv/bin:$PATH"
 
 EXPOSE 5050
 

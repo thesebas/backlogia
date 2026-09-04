@@ -101,36 +101,30 @@ docker compose up -d --build
    cd backlogia
    ```
 
-2. **Create a virtual environment**
+2. **Install dependencies** (requires [uv](https://docs.astral.sh/uv/))
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   uv sync
    ```
 
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Create your environment file**
+3. **Create your environment file**
    ```bash
    cp .env.example .env
    ```
 
-5. **Edit `.env` with your settings** (see [Configuration](configuration.md))
+4. **Edit `.env` with your settings** (see [Configuration](configuration.md))
 
-6. **Run the application**
+5. **Run the application**
    ```bash
-   python web/app.py
+   uv run python web/app.py
    ```
 
-7. **Access Backlogia** at [http://localhost:5050](http://localhost:5050)
+6. **Access Backlogia** at [http://localhost:5050](http://localhost:5050)
 
 ### Updating (Local Installation)
 
 ```bash
 git pull
-pip install -r requirements.txt
+uv sync
 ```
 
 Then restart the application.

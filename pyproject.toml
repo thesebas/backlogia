@@ -1,0 +1,32 @@
+[project]
+name = "backlogia"
+version = "0.1.0"
+description = "Self-hosted game library aggregator"
+requires-python = ">=3.11"
+dependencies = [
+    # Steam
+    "requests",
+    # Epic
+    "legendary-gl",
+    # Web interface
+    "fastapi",
+    "uvicorn[standard]",
+    "python-multipart",
+    "jinja2",
+    # IGDB integration
+    "python-dotenv",
+    # Metacritic scraping
+    "beautifulsoup4",
+    # Authentication (optional)
+    "bcrypt",
+    "itsdangerous",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "httpx",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
