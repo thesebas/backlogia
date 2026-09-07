@@ -103,6 +103,7 @@ docker compose up -d --build
 
 2. **Install dependencies** (requires [uv](https://docs.astral.sh/uv/))
    ```bash
+   ./scripts/fetch-nile.sh   # clones the pinned nile checkout (needed before any uv command)
    uv sync
    ```
 

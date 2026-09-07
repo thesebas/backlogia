@@ -10,7 +10,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies with uv (layer cached until lockfile changes)
-ENV UV_PROJECT_ENVIRONMENT=/app/.venv
+# vendor/nile is a path dependency; the script fetches+patches it first
+COPY scripts/ ./scripts/
+RUN ./scripts/fetch-nile.sh
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev
 

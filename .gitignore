@@ -229,3 +229,6 @@ __marimo__/
 .claude/
 .github/copilot-instructions.md
 .vscode/settings.json
+
+# nile is fetched into vendor/nile by scripts/fetch-nile.sh (see script header)
+vendor/

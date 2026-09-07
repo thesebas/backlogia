@@ -8,6 +8,8 @@ dependencies = [
     "requests",
     # Epic
     "legendary-gl",
+    # Amazon (nile, fetched+patched by scripts/fetch-nile.sh)
+    "nile",
     # Web interface
     "fastapi",
     "uvicorn[standard]",
@@ -30,3 +32,11 @@ dev = [
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
+
+[tool.uv.workspace]
+members = [
+    "vendor/nile",
+]
+
+[tool.uv.sources]
+nile = { workspace = true }
